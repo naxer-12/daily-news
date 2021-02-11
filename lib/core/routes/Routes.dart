@@ -1,4 +1,5 @@
 import 'package:daily_news/core/di/InjectionContainer.dart';
+import 'package:daily_news/features/splash/presentation/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
@@ -143,7 +144,7 @@ class Routes {
   static const String splash = 'splash';
 
   static final routes = <String, WidgetBuilder>{
-    // dashboard: (BuildContext context) => DashboardPage(),
+    splash: (BuildContext context) => SplashScreen(),
   };
 }
 

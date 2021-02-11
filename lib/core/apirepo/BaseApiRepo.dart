@@ -4,10 +4,8 @@ import 'package:daily_news/core/di/InjectionContainer.dart';
 import 'package:daily_news/core/http/network_info.dart';
 import 'package:daily_news/core/models/Success.dart';
 import 'package:daily_news/core/models/error/failure.dart';
-import 'package:daily_news/core/util/FlavorConfig.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-
 
 abstract class BaseApiRepo {
   NetworkInfo networkInfo = sl();
@@ -39,18 +37,7 @@ abstract class BaseApiRepo {
     } on TimeoutException {
       return Left(Failure(message: ""));
     } catch (e) {
-      if (!FlavorConfig.isProd()) {
-        print("Error :: " + e.toString());
-      }
-      // if (e.toString().contains(SOCKET_EXCEPTION)) {
-      //   return Left(
-      //     Failure(
-      //       message: INTERNET_CONNECTION,
-      //       apiStatus: INTERNET_CONNECTION_ERROR_STATUS_CODE,
-      //     ),
-      //   );
-      // }
-      return Left(Failure(message: ""));
+      return Left(Failure(message: "Unexpected error occurred"));
     } finally {}
   }
 }
