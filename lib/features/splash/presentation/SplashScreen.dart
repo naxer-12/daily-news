@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daily_news/features/weather_screen/presentation/weather_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -10,7 +11,14 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {});
+    Timer(Duration(seconds: 1), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => WeatherScreen(),
+        ),
+      );
+    });
   }
 
   @override

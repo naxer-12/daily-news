@@ -1,5 +1,6 @@
 import 'package:daily_news/core/di/InjectionContainer.dart';
 import 'package:daily_news/features/splash/presentation/SplashScreen.dart';
+import 'package:daily_news/features/weather_screen/presentation/weather_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
@@ -142,9 +143,11 @@ class Routes {
   //static variables
 
   static const String splash = 'splash';
+  static const String weatherscreen = 'weatherscreen';
 
   static final routes = <String, WidgetBuilder>{
     splash: (BuildContext context) => SplashScreen(),
+    weatherscreen: (BuildContext context) => WeatherScreen()
   };
 }
 

@@ -70,8 +70,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/news_icon.jpg
     - assets/images/news_icon.png
-    - assets/images/news.jpg
+    - assets/mock_assets/russia.jpg
+
 
 
