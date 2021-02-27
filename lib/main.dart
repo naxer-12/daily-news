@@ -17,6 +17,7 @@ class DailyNewsApp extends StatelessWidget {
       initialRoute: Routes.splash,
       routes: Routes.routes,
 
+
     );
   }
 }
