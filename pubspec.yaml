@@ -72,6 +72,7 @@ flutter:
   assets:
     - assets/images/news_icon.png
     - assets/mock_assets/russia.jpg
+    - assets/mock_assets/russia_2.jpg
 
 
 
