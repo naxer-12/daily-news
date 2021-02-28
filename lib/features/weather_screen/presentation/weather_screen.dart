@@ -21,8 +21,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
         children: [
           Container(
             child: Image.asset(
-              "assets/mock_assets/russia.jpg",
+              "assets/mock_assets/russia_2.jpg",
               fit: BoxFit.cover,
+              // colorBlendMode: ,
+              color: Colors.black.withOpacity(0.3),
+              colorBlendMode: BlendMode.hardLight,
               // height: double.infinity,
               // width: double.infinity,
             ),
