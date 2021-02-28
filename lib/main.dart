@@ -16,8 +16,6 @@ class DailyNewsApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.splash,
       routes: Routes.routes,
-
-
     );
   }
 }

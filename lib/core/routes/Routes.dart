@@ -1,5 +1,5 @@
 import 'package:daily_news/core/di/InjectionContainer.dart';
-import 'package:daily_news/features/splash/presentation/SplashScreen.dart';
+import 'package:daily_news/features/splash/presentation/splash_screen.dart';
 import 'package:daily_news/features/weather_screen/presentation/weather_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

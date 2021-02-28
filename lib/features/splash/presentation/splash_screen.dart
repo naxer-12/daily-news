@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:daily_news/features/weather_screen/presentation/weather_screen.dart';
+import 'package:daily_news/features/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => WeatherScreen(),
+          builder: (BuildContext context) => HomeScreen(),
         ),
       );
     });
