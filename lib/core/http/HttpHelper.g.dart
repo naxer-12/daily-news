@@ -16,12 +16,17 @@ class _RestHelper implements RestHelper {
   String baseUrl;
 
   @override
-  fetchLatestData() async {
+  fetchHeadlines(country, apiKey) async {
+    ArgumentError.checkNotNull(country, 'country');
+    ArgumentError.checkNotNull(apiKey, 'apiKey');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'country': country,
+      r'apiKey': apiKey
+    };
     final _data = <String, dynamic>{};
     final Response<Map<String, dynamic>> _result = await _dio.request(
-        'latest-news',
+        'top-headlines',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -29,7 +34,7 @@ class _RestHelper implements RestHelper {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = ApiResponse.fromJson(_result.data);
+    final value = TopHeadLinesModel.fromJson(_result.data);
     return value;
   }
 }

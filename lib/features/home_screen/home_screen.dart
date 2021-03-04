@@ -1,6 +1,6 @@
-import 'package:daily_news/features/news_screen/presentation/news_screen.dart';
 import 'package:daily_news/features/weather_screen/presentation/weather_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:daily_news/features/news_screen/presentation/news_page.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
     return PageView(
       pageSnapping: true,
       children: [
-        NewsScreen(),
+        NewsPage(),
         WeatherScreen(),
       ],
       onPageChanged: (value) {

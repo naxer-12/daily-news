@@ -1,6 +1,7 @@
 import 'package:daily_news/features/weather_screen/presentation/widgets/weather_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 class WeatherScreen extends StatefulWidget {
   @override
@@ -8,6 +9,15 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  Location location = new Location();
+  LocationData locationData;
+
+  @override
+  void initState() {
+    fetchLocation();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -268,5 +278,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
         )
       ],
     );
+  }
+
+  Future<LocationData> fetchLocation() async {
+    locationData = await location.getLocation();
+    return locationData;
   }
 }

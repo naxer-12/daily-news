@@ -1,5 +1,5 @@
 import 'HttpHelper.dart';
 
 abstract class RestClient {
-  RestHelper getClient();
+  RestHelper getClient(String url);
 }

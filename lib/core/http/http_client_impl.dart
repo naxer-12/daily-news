@@ -10,15 +10,15 @@ class RestClientImpl implements RestClient {
   final Dio dioClient;
 
   @override
-  RestHelper getClient() {
+  RestHelper getClient(String url) {
     // PrefHelper helper = sl();
     Map<String, String> headersMap = {
       'Content-Type': 'application/json',
     };
 
     dioClient.options.headers = headersMap;
-    dioClient.options.baseUrl = "https://api.currentsapi.services/v1/";
-    dioClient.options.queryParameters = {"apiKey": "", "language": "en"};
+    dioClient.options.baseUrl = url;
+    // dioClient.options.queryParameters = {};
 
     return RestHelper(dioClient);
   }
