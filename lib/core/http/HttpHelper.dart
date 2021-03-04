@@ -1,5 +1,6 @@
 import 'package:daily_news/core/http/api_constants.dart';
-import 'package:daily_news/core/http/models/response_model.dart';
+import 'package:daily_news/features/news_screen/model/top_headlines_model.dart';
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -12,6 +13,9 @@ part 'HttpHelper.g.dart';
 abstract class RestHelper {
   factory RestHelper(Dio dio) = _RestHelper;
 
-  @GET(LATEST_NEWS)
-  Future<ApiResponse> fetchLatestData();
+  @GET(TOP_HEADLINES)
+  Future<TopHeadLinesModel> fetchHeadlines(
+    @Query("country") String country,
+    @Query("apiKey") String apiKey,
+  );
 }

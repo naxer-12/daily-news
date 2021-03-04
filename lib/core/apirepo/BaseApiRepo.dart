@@ -20,7 +20,7 @@ abstract class BaseApiRepo {
       return Left(
         Failure(
           message: "",
-          apiStatus: 404,
+          status: "404"
         ),
       );
     }
@@ -33,7 +33,7 @@ abstract class BaseApiRepo {
         statusCode = e.response.statusCode;
         statusMessage = e.response.statusMessage;
       }
-      return Left(Failure(message: statusMessage, apiStatus: statusCode));
+      return Left(Failure(message: statusMessage));
     } on TimeoutException {
       return Left(Failure(message: ""));
     } catch (e) {
