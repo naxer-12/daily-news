@@ -1,11 +1,15 @@
-import 'package:daily_news/core/di/DependencyInjector.dart';
 import 'package:daily_news/core/http/http_client.dart';
 import 'package:daily_news/core/http/http_client_impl.dart';
 import 'package:daily_news/core/http/network_info.dart';
 import 'package:daily_news/core/http/network_info_impl.dart';
-import 'package:daily_news/features/news_screen/data/datasource/remote_data_source_impl.dart';
+import 'package:daily_news/core/preference/PrefHelper.dart';
+import 'package:daily_news/core/preference/PrefHelperImpl.dart';
+import 'package:daily_news/features/news_screen/data/datasource/remote_top_headlines_impl.dart';
 import 'package:daily_news/features/news_screen/data/domain/remote_top_headlines_data_repo_impl.dart';
 import 'package:daily_news/features/news_screen/domain/repository/top_headlines_repo.dart';
+import 'package:daily_news/features/weather_screen/data/datasource/remote_weather_source_impl.dart';
+import 'package:daily_news/features/weather_screen/data/domain/remote_data_repo_impl.dart';
+import 'package:daily_news/features/weather_screen/domain/repository/weather_data_repo.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -17,6 +21,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Dependency Injector
+  sl.registerLazySingleton<PrefHelper>(() => PrefHelperImpl());
 
   // sl.registerLazySingleton<AppDb>(() => AppDb());
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
@@ -28,6 +33,9 @@ Future<void> init() async {
     () => RemoteTopHeadLinesRepo(
       latestDataRepoSource: TopHeadLinesSourceImpl(),
     ),
+  );
+  sl.registerLazySingleton<WeatherDataRepo>(
+    () => RemoteWeatherData(weatherDataRepoSource: WeatherDataSourceImpl()),
   );
 
   dio.interceptors.add(PrettyDioLogger(

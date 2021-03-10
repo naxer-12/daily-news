@@ -1,3 +1,4 @@
+import 'package:daily_news/features/weather_screen/presentation/weather_page.dart';
 import 'package:daily_news/features/weather_screen/presentation/weather_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_news/features/news_screen/presentation/news_page.dart';
@@ -9,7 +10,7 @@ class HomeScreen extends StatelessWidget {
       pageSnapping: true,
       children: [
         NewsPage(),
-        WeatherScreen(),
+        WeatherPage(),
       ],
       onPageChanged: (value) {
         print("CHANGED VALUE :: $value");

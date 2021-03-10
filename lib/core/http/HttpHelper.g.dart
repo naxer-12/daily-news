@@ -37,4 +37,30 @@ class _RestHelper implements RestHelper {
     final value = TopHeadLinesModel.fromJson(_result.data);
     return value;
   }
+
+  @override
+  fetchWeatherData(lat, lon, exclude, appid) async {
+    ArgumentError.checkNotNull(lat, 'lat');
+    ArgumentError.checkNotNull(lon, 'lon');
+    ArgumentError.checkNotNull(exclude, 'exclude');
+    ArgumentError.checkNotNull(appid, 'appid');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'lat': lat,
+      r'lon': lon,
+      r'exclude': exclude,
+      r'appid': appid
+    };
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request('',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = WeatherModel.fromJson(_result.data);
+    return value;
+  }
 }
