@@ -29,10 +29,10 @@ abstract class BaseApiRepo {
     } on DioError catch (e) {
       String statusMessage = "";
       int statusCode = 0;
-      if (e.response != null) {
-        statusCode = e.response.statusCode;
-        statusMessage = e.response.statusMessage;
-      }
+      // if (e.response != null) {
+      //   statusCode = e.response.statusCode;
+      //   statusMessage = e.response.statusMessage;
+      // }
       return Left(Failure(message: statusMessage));
     } on TimeoutException {
       return Left(Failure(message: ""));

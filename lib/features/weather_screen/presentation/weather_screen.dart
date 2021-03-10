@@ -1,7 +1,17 @@
+import 'package:daily_news/core/di/InjectionContainer.dart';
+import 'package:daily_news/core/preference/PrefHelper.dart';
+import 'package:daily_news/core/util/shimmer_news.dart';
+import 'package:daily_news/features/weather_screen/model/weather_model.dart';
+import 'package:daily_news/features/weather_screen/presentation/bloc/weather_bloc.dart';
+import 'package:daily_news/features/weather_screen/presentation/bloc/weather_states.dart';
 import 'package:daily_news/features/weather_screen/presentation/widgets/weather_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:daily_news/core/util/date_utils.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class WeatherScreen extends StatefulWidget {
   @override
@@ -11,6 +21,9 @@ class WeatherScreen extends StatefulWidget {
 class _WeatherScreenState extends State<WeatherScreen> {
   Location location = new Location();
   LocationData locationData;
+  WeatherModel weatherModel;
+  PrefHelper helper = sl();
+  DateTime currentWeatherDate;
 
   @override
   void initState() {
@@ -20,41 +33,54 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: WeatherAppBar(
-        onSearch: () {
-          print("SEARCH CALLED");
-        },
-      ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Container(
-            child: Image.asset(
-              "assets/mock_assets/russia_2.jpg",
-              fit: BoxFit.cover,
-              // colorBlendMode: ,
-              color: Colors.black.withOpacity(0.3),
-              colorBlendMode: BlendMode.hardLight,
-              // height: double.infinity,
-              // width: double.infinity,
+    return BlocBuilder<WeatherBloc, WeatherStates>(
+      builder: (context, state) {
+        if (state is LoadingWeatherState) {
+          return ShimmerNews();
+        } else if (state is FetchedWeatherDataState) {
+          weatherModel = state.weatherModel;
+          currentWeatherDate = DateTime.fromMillisecondsSinceEpoch(
+              weatherModel.current.dt * 1000);
+          return Scaffold(
+            // appBar: WeatherAppBar(
+            //   onSearch: () {
+            //     print("SEARCH CALLED");
+            //   },
+            // ),
+            body: Stack(
+              fit: StackFit.expand,
+              children: [
+                Container(
+                  child: Image.asset(
+                    "assets/mock_assets/russia_2.jpg",
+                    fit: BoxFit.cover,
+                    // colorBlendMode: ,
+                    color: Colors.black.withOpacity(0.3),
+                    colorBlendMode: BlendMode.hardLight,
+                    // height: double.infinity,
+                    // width: double.infinity,
+                  ),
+                ),
+                Positioned(
+                  top: 0.0,
+                  child: yourLocationViewWidget(),
+                ),
+                Positioned(
+                  child: countryLocation(),
+                  top: 50.0,
+                  left: 20.0,
+                ),
+                Positioned(
+                  bottom: 1.0,
+                  child: weatherLocation(),
+                ),
+              ],
             ),
-          ),
-          Positioned(
-            top: 0.0,
-            child: yourLocationViewWidget(),
-          ),
-          Positioned(
-            child: countryLocation(),
-            top: 50.0,
-            left: 20.0,
-          ),
-          Positioned(
-            bottom: 1.0,
-            child: weatherLocation(),
-          ),
-        ],
-      ),
+          );
+        } else {
+          return SizedBox.shrink();
+        }
+      },
     );
   }
 
@@ -105,7 +131,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "London",
+          helper.getPlace(),
           style: TextStyle(
             color: Colors.white,
             fontSize: 20.0,
@@ -115,7 +141,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         Container(
           margin: EdgeInsets.only(top: 5.0),
           child: Text(
-            "United Kingdom",
+            helper.getCountry(),
             style: TextStyle(
               color: Colors.white,
               fontSize: 15.0,
@@ -129,6 +155,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   Widget weatherLocation() {
+    String weatherDesc = "${weatherModel.current.weather[0].description[0].toUpperCase()}${weatherModel.current.weather[0].description.substring(1)}";
+    String date = DateFormat('dd').format(currentWeatherDate);
+    String weekDay = DateFormat('EEE').format(currentWeatherDate);
     return Container(
       height: MediaQuery.of(context).size.height / 3,
       width: MediaQuery.of(context).size.width,
@@ -157,13 +186,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
               SizedBox(
                 height: 10,
               ),
-              getWeatherStatus(),
+              getWeatherStatus(weatherDesc, weekDay, date),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "19",
+                    "19\u{00B0}",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 60.0,
@@ -207,7 +236,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (BuildContext ctx, int data) {
-                  return getWeatherStatus();
+                  return getWeatherStatus(weatherDesc, weekDay, date);
                 },
                 separatorBuilder: (BuildContext ctx, int data) {
                   return Divider(
@@ -226,7 +255,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   Text getUpdatedTimeWidget() {
     return Text(
-      "Updated 12m ago",
+      timeago.format(currentWeatherDate),
       style: TextStyle(
         color: Colors.grey,
         fontSize: 12.0,
@@ -236,14 +265,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
     );
   }
 
-  Widget getWeatherStatus() {
+  Widget getWeatherStatus(String weatherDesc, String weekDay, String date) {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Heavy Rain",
+              weatherDesc,
               style: TextStyle(
                 color: Colors.black,
                 letterSpacing: -1.0,
@@ -252,7 +281,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ),
             ),
             Text(
-              "Thu",
+              weekDay,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 15.0,
@@ -266,7 +295,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              "06",
+              date,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 15.0,

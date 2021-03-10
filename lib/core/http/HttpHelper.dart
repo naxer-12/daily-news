@@ -1,5 +1,6 @@
 import 'package:daily_news/core/http/api_constants.dart';
 import 'package:daily_news/features/news_screen/model/top_headlines_model.dart';
+import 'package:daily_news/features/weather_screen/model/weather_model.dart';
 
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -17,5 +18,13 @@ abstract class RestHelper {
   Future<TopHeadLinesModel> fetchHeadlines(
     @Query("country") String country,
     @Query("apiKey") String apiKey,
+  );
+
+  @GET('')
+  Future<WeatherModel> fetchWeatherData(
+    @Query("lat") double lat,
+    @Query("lon") double lon,
+    @Query("exclude") String exclude,
+    @Query("appid") String appid,
   );
 }
