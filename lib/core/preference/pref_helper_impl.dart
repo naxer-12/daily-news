@@ -1,6 +1,6 @@
-import 'package:daily_news/core/preference/PrefConstants.dart';
-import 'package:daily_news/core/preference/PrefHelper.dart';
-import 'package:daily_news/core/preference/Prefs.dart';
+import 'package:daily_news/core/preference/pref_constants.dart';
+import 'package:daily_news/core/preference/pref_helper.dart';
+import 'package:daily_news/core/preference/prefs.dart';
 import 'package:geocoding_platform_interface/src/models/placemark.dart';
 import 'package:geolocator_platform_interface/src/models/position.dart';
 
@@ -44,4 +44,12 @@ class PrefHelperImpl implements PrefHelper {
 
   @override
   double getLon() => Prefs.getDouble(KEY_LON);
+
+  @override
+  bool getMetrics() => Prefs.getBool(KEY_UNIT_METRICS,true);
+
+  @override
+  Future<void> setUnitMetrics(bool metrics) async {
+    await Prefs.setBool(KEY_UNIT_METRICS, metrics);
+  }
 }

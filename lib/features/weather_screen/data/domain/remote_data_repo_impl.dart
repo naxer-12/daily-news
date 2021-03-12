@@ -11,13 +11,33 @@ class RemoteWeatherData extends WeatherDataRepo {
 
   @override
   Future<Either<Failure, Success>> fetchWeatherData(
-          double lat, double lon, String exclude, String appid) =>
-      baseApiMethod(() => _fetchWeather(lat, lon, exclude, appid));
+          double lat, double lon, String exclude, String appid, String units) =>
+      baseApiMethod(() => _fetchWeather(lat, lon, exclude, appid, units));
 
-  Future<Either<Failure, Success>> _fetchWeather(
-      double lat, double lon, String exclude, String appid) async {
+  Future<Either<Failure, Success>> _fetchWeather(double lat, double lon,
+      String exclude, String appid, String units) async {
     var response = await weatherDataRepoSource.callWeatherDataApi(
-        lat, lon, exclude, appid);
+        lat, lon, exclude, appid, units);
+    if (response == null) {
+      return Left(
+        Failure(message: ""),
+      );
+    } else {
+      Success dataModel = Success(response);
+      return Right(dataModel);
+    }
+  }
+
+  @override
+  Future<Either<Failure, Success>> fetchRandomPhoto(String query,
+          String orientation, String clientId, String contentFilter) =>
+      baseApiMethod(
+          () => _fetchRandomImage(query, orientation, clientId, contentFilter));
+
+  Future<Either<Failure, Success>> _fetchRandomImage(String query,
+      String orientation, String clientId, String contentFilter) async {
+    var response = await weatherDataRepoSource.callRandomPhotoApi(
+        query, orientation, clientId, contentFilter);
     if (response == null) {
       return Left(
         Failure(message: ""),

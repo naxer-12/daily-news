@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:daily_news/core/di/InjectionContainer.dart';
+import 'package:daily_news/core/di/injection_container.dart';
 import 'package:daily_news/core/http/network_info.dart';
 import 'package:daily_news/core/models/Success.dart';
 import 'package:daily_news/core/models/error/failure.dart';

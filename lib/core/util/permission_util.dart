@@ -12,9 +12,9 @@ class PermissionUtil {
     } else {
       if (Platform.isAndroid) {
         if (status == PermissionStatus.permanentlyDenied ||
-            status == PermissionStatus.undetermined ||
+            status == PermissionStatus.undetermined ||status == PermissionStatus.denied||
             status.isRestricted) {
-          askDialog(context: context);
+          askDialog(context: context,title: "Permission",content: "Please provide location permission");
           return false;
         }
         return false;
@@ -24,10 +24,10 @@ class PermissionUtil {
   }
 
   static askDialog({
-    BuildContext context,
+    BuildContext context,String title,String content
   }) =>
       ConfirmationDialog.showConfirmationDialog(
-          context, "Location", "Please provide location permission", () async {
+          context, title, content, () async {
         await openAppSettings();
       });
 }

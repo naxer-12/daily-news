@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:daily_news/core/util/app_utilities.dart';
 import 'package:daily_news/features/news_screen/model/top_headlines_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -18,11 +19,8 @@ class NewsContentScreen extends StatelessWidget {
         articles.urlToImage != null
             ? CachedNetworkImage(
                 imageUrl: articles.urlToImage,
-                placeholder: (context, url) => Image(
-                  image: CachedNetworkImageProvider(
-                    "http://via.placeholder.com/450x250",
-                  ),
-                ),
+                placeholder: (context, url) =>
+                    Image.asset("assets/images/placeholder.png"),
                 placeholderFadeInDuration: Duration(
                   milliseconds: 500,
                 ),
@@ -43,7 +41,7 @@ class NewsContentScreen extends StatelessWidget {
               SizedBox(
                 height: 40.0,
               ),
-              publishedDescription(),
+              publishedDescription(context),
               SizedBox(
                 height: 25.0,
               ),
@@ -60,8 +58,8 @@ class NewsContentScreen extends StatelessWidget {
     );
   }
 
-  Widget publishedDescription() {
-    return IntrinsicHeight(
+  Widget publishedDescription(BuildContext context) {
+    return FittedBox(
       child: Row(
         children: [
           articles.author != null && articles.author.isNotEmpty
@@ -95,6 +93,7 @@ class NewsContentScreen extends StatelessWidget {
             ),
             Text(
               articles.publishedAt.getPublishedDate(),
+
             )
           ]
         ],
@@ -111,6 +110,7 @@ class NewsContentScreen extends StatelessWidget {
               color: Colors.black,
               fontSize: 25,
             ),
+            maxLines: 3,
           )
         : SizedBox.shrink();
   }
@@ -136,7 +136,12 @@ class NewsContentScreen extends StatelessWidget {
               style: TextStyle(color: Colors.blueAccent, fontSize: 18),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print("HEllo!");
+                try {
+                  AppUtilities.launchURL(articles?.url);
+                }
+                catch(e){
+                  print(e);
+                }
                 },
             ),
           )

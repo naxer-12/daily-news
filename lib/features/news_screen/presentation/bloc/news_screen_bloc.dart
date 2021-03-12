@@ -1,5 +1,5 @@
-import 'package:daily_news/core/di/InjectionContainer.dart';
-import 'package:daily_news/core/preference/PrefHelper.dart';
+import 'package:daily_news/core/di/injection_container.dart';
+import 'package:daily_news/core/preference/pref_helper.dart';
 import 'package:daily_news/core/util/api_keys_constant.dart';
 import 'package:daily_news/features/news_screen/domain/repository/top_headlines_repo.dart';
 import 'package:daily_news/features/news_screen/presentation/bloc/news_screen_events.dart';
@@ -42,35 +42,17 @@ class NewsScreenBloc extends Bloc<NewsEvent, NewsState> {
   }
 
   Future<Placemark> _determinePosition(BuildContext context) async {
-    bool serviceEnabled;
-    LocationPermission permission;
-    //
-    // serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    // if (!serviceEnabled) {
-    //   return Future.error('Location services are disabled.');
-    // }
-    //
-    // permission = await Geolocator.checkPermission();
-    // if (permission == LocationPermission.deniedForever) {
-    //   return Future.error(
-    //       'Location permissions are permantly denied, we cannot request permissions.');
-    // }
-    //
-    // if (permission == LocationPermission.denied) {
-    //   permission = await Geolocator.requestPermission();
-    //   if (permission != LocationPermission.whileInUse &&
-    //       permission != LocationPermission.always) {
-    //     return Future.error(
-    //         'Location permissions are denied (actual value: $permission).');
-    //   }
-    // }
     bool isPermission = await PermissionUtil.getLocationPermission(context);
     if (isPermission) {
-      Position position = await Geolocator.getCurrentPosition();
-      helper.setUserPosition(position);
-      List<Placemark> placeMark =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
-      return placeMark[0];
+      try {
+        Position position = await Geolocator.getCurrentPosition();
+        await helper.setUserPosition(position);
+        List<Placemark> placeMark = await placemarkFromCoordinates(
+            position.latitude, position.longitude);
+        return placeMark[0];
+      } catch (e) {
+        print(e);
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:daily_news/core/http/api_constants.dart';
 import 'package:daily_news/features/news_screen/model/top_headlines_model.dart';
+import 'package:daily_news/features/weather_screen/model/random_image.dart';
 import 'package:daily_news/features/weather_screen/model/weather_model.dart';
 
 import 'package:dio/dio.dart';
@@ -26,5 +27,14 @@ abstract class RestHelper {
     @Query("lon") double lon,
     @Query("exclude") String exclude,
     @Query("appid") String appid,
+    @Query("units") String units,
   );
+  @GET(RANDOM_PHOTO)
+  Future<RandomImage> fetchRandomImage(
+      @Query("query") String query,
+      @Query("orientation") String orientation,
+      @Query("client_id") String clientId,
+      @Query("content_filter") String contentFilter,
+      );
 }
+

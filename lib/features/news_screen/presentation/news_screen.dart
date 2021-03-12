@@ -1,4 +1,7 @@
+import 'package:daily_news/core/di/injection_container.dart';
+import 'package:daily_news/core/preference/pref_helper.dart';
 import 'package:daily_news/core/util/shimmer_news.dart';
+import 'package:daily_news/features/news_screen/presentation/bloc/news_screen_events.dart';
 import 'package:daily_news/features/news_screen/presentation/bloc/news_screen_states.dart';
 import 'package:daily_news/features/news_screen/presentation/news_content_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +17,7 @@ class NewsScreen extends StatefulWidget {
 class _NewsScreenState extends State<NewsScreen>
     with AutomaticKeepAliveClientMixin {
   PageController _pageController = PageController(keepPage: true);
-
+  PrefHelper helper = sl();
   @override
   void initState() {
     super.initState();
@@ -31,16 +34,28 @@ class _NewsScreenState extends State<NewsScreen>
             if (state is LoadingState) {
               return ShimmerNews();
             } else if (state is FetchedNewsScreenState) {
-              return PageView.builder(
-                scrollDirection: Axis.vertical,
-                controller: _pageController,
-                itemCount: state.topHeadLinesModel.articles.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Articles articles = state.topHeadLinesModel.articles[index];
-                  return NewsContentScreen(
-                    articles: articles,
-                  );
-                },
+              return RefreshIndicator(
+                triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                onRefresh: _refreshNews,
+                child: state.topHeadLinesModel.articles.isNotEmpty
+                    ? PageView.builder(
+                        scrollDirection: Axis.vertical,
+                        controller: _pageController,
+                        itemCount: state.topHeadLinesModel.articles.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Articles articles =
+                              state.topHeadLinesModel.articles[index];
+                          return NewsContentScreen(
+                            articles: articles,
+                          );
+                        },
+                      )
+                    : Center(
+                        child: Container(
+                          child: Text(
+                              "Sorry, we are not tracking news for ${helper.getCountry()}"),
+                        ),
+                      ),
               );
             } else {
               return SizedBox.shrink();
@@ -65,4 +80,9 @@ class _NewsScreenState extends State<NewsScreen>
 
   @override
   bool get wantKeepAlive => true;
+
+  Future<void> _refreshNews() async {
+    BlocProvider.of<NewsScreenBloc>(context)
+        .add(FetchNewsHeadLineEvent(context));
+  }
 }

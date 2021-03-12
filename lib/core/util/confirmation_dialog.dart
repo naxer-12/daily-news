@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ConfirmationDialog {
   static showConfirmationDialog(BuildContext context, String title,
@@ -7,7 +8,8 @@ class ConfirmationDialog {
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
       onPressed: () {
-        Navigator.of(context).pop();
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+
       },
     );
     Widget continueButton = FlatButton(

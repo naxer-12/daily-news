@@ -3,10 +3,23 @@ import 'package:daily_news/features/weather_screen/presentation/weather_screen.d
 import 'package:flutter/material.dart';
 import 'package:daily_news/features/news_screen/presentation/news_page.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
+  PageController _pageController = PageController(keepPage: true);
+
+  @override
+  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return PageView(
+      controller: _pageController,
       pageSnapping: true,
       children: [
         NewsPage(),
