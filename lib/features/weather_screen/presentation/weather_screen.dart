@@ -372,8 +372,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   Widget metricSwitch() {
     return FlutterSwitch(
-      width: 125.0,
-      height: 55.0,
+      width: 100.0,
+      height: 40.0,
       valueFontSize: 25.0,
       toggleSize: 45.0,
       value: helper.getMetrics(),
@@ -384,8 +384,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
         size: 18.0,
       ),
       inactiveIcon: Icon(WeatherIcon.fahrenheit_degrees),
-      activeColor: Colors.transparent,
-      inactiveColor: Colors.transparent,
+      activeColor: Colors.white,
+
+      inactiveColor: Colors.white,
       onToggle: (val) async {
         await helper.setUnitMetrics(val);
         BlocProvider.of<WeatherBloc>(context).add(FetchWeatherDataEvent());

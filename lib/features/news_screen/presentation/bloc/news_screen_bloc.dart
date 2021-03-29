@@ -42,13 +42,21 @@ class NewsScreenBloc extends Bloc<NewsEvent, NewsState> {
   }
 
   Future<Placemark> _determinePosition(BuildContext context) async {
+    print("LOCATION PERMISSION :: REQUESTED");
     bool isPermission = await PermissionUtil.getLocationPermission(context);
+
     if (isPermission) {
+      print("LOCATION PERMISSION :: ACCEPTED");
+
       try {
         Position position = await Geolocator.getCurrentPosition();
+        print("LOCATION PERMISSION :: GOT POSITION");
+
         await helper.setUserPosition(position);
         List<Placemark> placeMark = await placemarkFromCoordinates(
             position.latitude, position.longitude);
+        print("LOCATION PERMISSION :: GETTING PLACEMARK");
+
         return placeMark[0];
       } catch (e) {
         print(e);

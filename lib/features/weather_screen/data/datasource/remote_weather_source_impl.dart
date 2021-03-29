@@ -17,4 +17,4 @@ class WeatherDataSourceImpl extends WeatherDataRepoSource {
       restClient
           .getClient(UNSPLASH_API)
           .fetchRandomImage(query, orientation, clientId, contentFilter);
-}k
+}

@@ -25,9 +25,6 @@ class _HomeScreenState extends State<HomeScreen>
         NewsPage(),
         WeatherPage(),
       ],
-      onPageChanged: (value) {
-        print("CHANGED VALUE :: $value");
-      },
       scrollDirection: Axis.horizontal,
     );
   }

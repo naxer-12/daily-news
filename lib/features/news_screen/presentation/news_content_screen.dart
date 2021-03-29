@@ -20,12 +20,14 @@ class NewsContentScreen extends StatelessWidget {
             ? CachedNetworkImage(
                 imageUrl: articles.urlToImage,
                 placeholder: (context, url) =>
-                    Image.asset("assets/images/placeholder.png"),
+                    placeHolder("assets/images/placeholder_icon.png"),
+
                 placeholderFadeInDuration: Duration(
                   milliseconds: 500,
                 ),
                 fit: BoxFit.fitHeight,
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) =>
+                    placeHolder("assets/images/broken_icon.png"),
               )
             : SizedBox.shrink(),
         Container(
@@ -93,7 +95,6 @@ class NewsContentScreen extends StatelessWidget {
             ),
             Text(
               articles.publishedAt.getPublishedDate(),
-
             )
           ]
         ],
@@ -136,15 +137,32 @@ class NewsContentScreen extends StatelessWidget {
               style: TextStyle(color: Colors.blueAccent, fontSize: 18),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                try {
-                  AppUtilities.launchURL(articles?.url);
-                }
-                catch(e){
-                  print(e);
-                }
+                  try {
+                    AppUtilities.launchURL(articles?.url);
+                  } catch (e) {
+                    print(e);
+                  }
                 },
             ),
           )
         : SizedBox.shrink();
+  }
+
+  Widget placeHolder(String imageUrl) {
+    return Stack(
+
+      children: [
+        Image.asset("assets/images/placeholder.png"),
+        Positioned(
+            top: 50,
+            left: 150,
+            child: Image.asset(
+              imageUrl,
+              height: 80,
+              color: Colors.grey.withOpacity(0.8),
+              width: 80,
+            ))
+      ],
+    );
   }
 }
